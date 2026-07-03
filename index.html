@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>דאשבורד קורסים — תיכונים ספטמבר 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --text: #2d2a3e;
+  --muted: #8b87a0;
+  --line: rgba(45, 42, 62, 0.08);
+  --surface: rgba(255, 255, 255, 0.72);
+  --glass: rgba(255, 255, 255, 0.55);
+  --accent: #7c5cf0;
+  --radius: 24px;
+  --shadow: 0 2px 6px rgba(80, 60, 120, 0.05), 0 18px 44px rgba(80, 60, 120, 0.09);
+  --shadow-lift: 0 6px 14px rgba(80, 60, 120, 0.1), 0 26px 60px rgba(80, 60, 120, 0.16);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: "Heebo", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  background: linear-gradient(180deg, #f6f1fb 0%, #f9f3f3 45%, #fdf6ef 100%);
+  min-height: 100vh;
+}
+
+/* ===== dreamy backdrop ===== */
+.scene { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.scene .sun {
+  position: absolute; top: 40px; inset-inline-start: 30%;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: radial-gradient(circle, #fff7e8 0%, #ffe9c9 45%, transparent 72%);
+  filter: blur(6px); opacity: 0.95;
+}
+.scene .dune { position: absolute; border-radius: 50%; filter: blur(2px); }
+.scene .dune.d1 { width: 160vw; height: 60vw; top: 12vh; inset-inline-start: -40vw; background: linear-gradient(180deg, rgba(216,200,245,0.5), rgba(238,226,250,0.15)); }
+.scene .dune.d2 { width: 150vw; height: 55vw; top: 26vh; inset-inline-end: -50vw; background: linear-gradient(180deg, rgba(247,215,200,0.45), rgba(252,236,226,0.1)); }
+.scene .dune.d3 { width: 170vw; height: 65vw; top: 42vh; inset-inline-start: -35vw; background: linear-gradient(180deg, rgba(232,222,250,0.55), rgba(249,243,243,0)); }
+
+/* ===== layout ===== */
+.layout { display: flex; min-height: 100vh; }
+
+.sidebar {
+  position: fixed; left: 14px; top: 14px; bottom: 14px; width: 212px;
+  background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.8); border-radius: 26px; box-shadow: var(--shadow);
+  padding: 22px 14px; display: flex; flex-direction: column; gap: 6px; z-index: 20;
+}
+.logo { display: flex; align-items: center; gap: 10px; padding: 0 8px 18px; }
+.logo .mark {
+  width: 38px; height: 38px; border-radius: 13px;
+  background: linear-gradient(135deg, #8b5cf6, #6d4df0); color: #fff;
+  display: grid; place-items: center; font-weight: 800; font-size: 1.15rem;
+  box-shadow: 0 6px 16px rgba(124,92,240,0.4);
+}
+.logo .name { font-weight: 700; font-size: 0.95rem; }
+
+.nav-btn {
+  display: flex; align-items: center; gap: 11px; width: 100%;
+  border: none; background: none; color: var(--muted); font-family: inherit;
+  font-size: 0.93rem; font-weight: 500; padding: 11px 14px; border-radius: 14px;
+  cursor: pointer; transition: all 0.15s; text-decoration: none;
+}
+.nav-btn svg { width: 19px; height: 19px; flex-shrink: 0; }
+.nav-btn:hover { background: rgba(124,92,240,0.07); color: var(--accent); }
+.nav-btn.active {
+  background: linear-gradient(135deg, rgba(139,92,246,0.14), rgba(109,77,240,0.1));
+  color: var(--accent); font-weight: 700;
+}
+.nav-btn .count {
+  margin-inline-start: auto; font-size: 0.72rem; background: rgba(124,92,240,0.1);
+  color: var(--accent); border-radius: 999px; padding: 1px 8px;
+}
+.sidebar .spacer { flex: 1; }
+.sidebar .synced-note { font-size: 0.72rem; color: var(--muted); padding: 10px 14px 0; border-top: 1px solid var(--line); }
+
+.content { flex: 1; margin-left: 250px; padding: 40px 40px 60px; max-width: 1180px; }
+
+/* ===== welcome ===== */
+.welcome { margin-bottom: 26px; }
+.welcome h1 { margin: 0 0 4px; font-size: clamp(1.8rem, 3.4vw, 2.5rem); font-weight: 800; letter-spacing: -0.01em; }
+.welcome .sub { color: var(--muted); font-size: 1.04rem; margin: 0; }
+
+.track-toggle {
+  display: inline-flex; gap: 4px; margin-top: 18px; background: var(--glass);
+  backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.9);
+  border-radius: 999px; box-shadow: var(--shadow); padding: 5px;
+}
+.track-toggle button {
+  border: none; background: none; color: var(--muted); font-family: inherit;
+  font-size: 0.92rem; font-weight: 600; padding: 9px 20px; border-radius: 999px;
+  cursor: pointer; transition: all 0.18s;
+}
+.track-toggle button:hover { color: var(--accent); }
+.track-toggle button.active {
+  background: linear-gradient(135deg, #8b5cf6, #6d4df0); color: #fff;
+  box-shadow: 0 6px 16px rgba(124,92,240,0.4);
+}
+
+.hero-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 22px; }
+
+.search-box { position: relative; flex: 1; min-width: 230px; max-width: 420px; }
+.search-box input {
+  width: 100%; border: 1px solid rgba(255,255,255,0.9); background: var(--glass);
+  backdrop-filter: blur(10px); border-radius: 999px; padding: 11px 42px 11px 16px;
+  font-family: inherit; font-size: 0.93rem; color: var(--text); outline: none;
+  box-shadow: var(--shadow); transition: box-shadow 0.15s, border-color 0.15s;
+}
+.search-box input:focus { border-color: rgba(124,92,240,0.5); box-shadow: 0 0 0 4px rgba(124,92,240,0.12), var(--shadow); }
+.search-box .search-icon { position: absolute; inset-inline-start: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+
+.progress-card {
+  display: flex; align-items: center; gap: 12px; background: var(--glass); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.9); border-radius: 999px; box-shadow: var(--shadow);
+  padding: 9px 18px; font-size: 0.85rem; color: var(--muted);
+}
+.progress-bar { width: 130px; height: 8px; background: rgba(124,92,240,0.12); border-radius: 999px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #a78bfa, #7c5cf0); transition: width 1s cubic-bezier(0.22,1,0.36,1); }
+
+.next-jump {
+  background: linear-gradient(135deg, #8b5cf6, #6d4df0); color: #fff; border: none;
+  border-radius: 999px; padding: 11px 22px; font-family: inherit; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; box-shadow: 0 10px 26px rgba(124,92,240,0.4); transition: transform 0.15s, box-shadow 0.15s;
+}
+.next-jump:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(124,92,240,0.5); }
+
+/* ===== course info panels ===== */
+.courses-info { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 28px 0; }
+@media (max-width: 920px) { .courses-info { grid-template-columns: 1fr; } }
+.info-panel {
+  background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,0.9); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 20px 22px;
+}
+.info-panel h2 { margin: 0 0 2px; font-size: 1.05rem; color: var(--accent-c); }
+.info-panel .grades { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
+.info-panel dl { margin: 0; font-size: 0.86rem; }
+.info-panel .row { display: flex; gap: 8px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+.info-panel .row:last-of-type { border-bottom: none; }
+.info-panel dt { color: var(--muted); flex: 0 0 80px; font-weight: 600; }
+.info-panel dd { margin: 0; flex: 1; }
+.info-panel .contacts { margin-top: 10px; font-size: 0.83rem; }
+.info-panel .contact-line { display: flex; justify-content: space-between; padding: 3px 0; color: var(--muted); }
+.info-panel .contact-line a { color: var(--accent-c); text-decoration: none; font-weight: 600; direction: ltr; unicode-bidi: isolate; }
+.info-panel .notes {
+  margin-top: 10px; font-size: 0.78rem; color: var(--muted);
+  background: rgba(124,92,240,0.06); border-radius: 12px; padding: 9px 12px;
+}
+.info-panel .notes div + div { margin-top: 4px; }
+.info-panel.pal-blue { --accent-c: #3f7fe8; }
+.info-panel.pal-green { --accent-c: #14a06f; }
+
+.exam2-note {
+  background: rgba(124,92,240,0.07); border: 1px dashed rgba(124,92,240,0.3); color: #5b21b6;
+  border-radius: 16px; padding: 12px 18px; font-size: 0.83rem; margin: 18px 0 0;
+}
+
+/* ===== month groups & cards grid ===== */
+.week-header { display: flex; align-items: baseline; gap: 10px; margin: 34px 4px 16px; }
+.week-header .week-num { font-weight: 800; font-size: 1.05rem; }
+.week-header .week-dates { color: var(--muted); font-size: 0.85rem; }
+
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 22px; }
+
+.session-card {
+  position: relative; border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, var(--p2) 100%);
+  border: 1px solid rgba(255,255,255,0.85); box-shadow: var(--shadow);
+  padding: 20px 20px 18px; min-height: 230px; display: flex; flex-direction: column;
+  overflow: hidden; transition: transform 0.22s, box-shadow 0.22s;
+}
+.session-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); }
+
+.session-card .art { position: absolute; inset-inline: 0; bottom: 0; height: 58%; pointer-events: none; z-index: 0; }
+.session-card .art::before, .session-card .art::after { content: ""; position: absolute; border-radius: 50%; filter: blur(2px); }
+.session-card .art::before { width: 190%; height: 95%; bottom: -45%; inset-inline-start: -55%; background: linear-gradient(180deg, var(--p1), transparent 80%); opacity: 0.75; }
+.session-card .art::after { width: 170%; height: 85%; bottom: -50%; inset-inline-end: -60%; background: linear-gradient(180deg, var(--p1), transparent 75%); opacity: 0.5; }
+.session-card .orb {
+  position: absolute; bottom: 22%; inset-inline-end: 14%; width: 56px; height: 56px; border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95), var(--p1) 75%);
+  box-shadow: inset 0 -8px 16px rgba(255,255,255,0.5), 0 10px 22px rgba(80,60,120,0.12);
+  opacity: 0.85; z-index: 0;
+}
+
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; position: relative; z-index: 1; }
+.card-num { font-size: 2.1rem; font-weight: 800; line-height: 1; color: var(--accent-c); letter-spacing: -0.02em; }
+.card-num .mon { font-size: 0.78rem; font-weight: 700; margin-inline-start: 3px; }
+.corner-icon { color: var(--accent-c); opacity: 0.9; }
+.corner-icon svg { width: 21px; height: 21px; }
+
+.card-title-area { position: relative; z-index: 1; margin-top: 8px; }
+.session-card h3 { margin: 0; font-size: 1.04rem; font-weight: 700; }
+.card-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 6px; font-size: 0.78rem; color: var(--muted); }
+.card-note { position: relative; z-index: 1; font-size: 0.74rem; color: var(--muted); margin-top: 6px; font-style: italic; }
+
+.status-chip { font-size: 0.68rem; font-weight: 700; border-radius: 999px; padding: 2px 9px; background: rgba(255,255,255,0.75); color: var(--muted); }
+.status-chip.next { background: var(--accent-c); color: #fff; animation: chipPulse 2.4s infinite; }
+.status-chip.warn { background: rgba(220,38,38,0.12); color: #b91c1c; }
+@keyframes chipPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(124,92,240,0.35);} 50% { box-shadow: 0 0 0 8px rgba(124,92,240,0);} }
+
+.session-card.past { filter: saturate(0.55); opacity: 0.82; }
+.session-card.past:hover { filter: none; opacity: 1; }
+.session-card.next { border-color: var(--accent-c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-c) 22%, transparent), var(--shadow-lift); }
+
+.cta {
+  position: relative; z-index: 1; margin-top: auto; display: flex; align-items: center; justify-content: center;
+  gap: 8px; width: 100%; border: none; border-radius: 999px; padding: 11px 16px; font-family: inherit;
+  font-size: 0.86rem; font-weight: 700; color: #fff; background: var(--accent-c); cursor: pointer;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--accent-c) 40%, transparent);
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+.cta:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.cta .arrow { transition: transform 0.15s; }
+.cta:hover .arrow { transform: translateX(-4px); }
+
+.pal-purple { --p1: #c9b8f5; --p2: #efe9fd; --accent-c: #7c5cf0; }
+.pal-blue   { --p1: #a8cdf8; --p2: #e3effd; --accent-c: #3f7fe8; }
+.pal-green  { --p1: #a9e8cd; --p2: #e0f7ec; --accent-c: #14a06f; }
+.pal-peach  { --p1: #f8c9a4; --p2: #fdeada; --accent-c: #ec8b33; }
+.pal-gray   { --p1: #d9d8e3; --p2: #f1f0f5; --accent-c: #8b87a0; }
+
+.empty-state { text-align: center; color: var(--muted); padding: 70px 0 30px; font-size: 0.95rem; }
+
+.quote {
+  margin: 56px auto 0; max-width: 620px; display: flex; align-items: center; justify-content: center;
+  gap: 10px; background: var(--glass); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.9);
+  border-radius: 999px; box-shadow: var(--shadow); padding: 12px 24px; font-size: 0.84rem; color: var(--muted); text-align: center;
+}
+.quote .spark { color: #e6a23c; }
+
+/* ===== modal ===== */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(60,50,90,0.32); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center; padding: 22px; z-index: 50;
+}
+.modal-backdrop.show { display: flex; }
+.modal {
+  background: linear-gradient(180deg, #ffffff 0%, #faf7ff 100%); border: 1px solid rgba(255,255,255,0.9);
+  border-radius: 28px; max-width: 620px; width: 100%; max-height: 86vh; overflow-y: auto; padding: 30px;
+  box-shadow: 0 40px 90px rgba(60,50,90,0.35); animation: modalIn 0.24s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes modalIn { from { opacity:0; transform: translateY(16px) scale(0.97);} to { opacity:1; transform:none; } }
+
+.modal-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+.modal-head .m-num { font-size: 2.1rem; font-weight: 800; line-height: 1; color: var(--accent-c, var(--accent)); }
+.modal-head h3 { margin: 0; font-size: 1.25rem; }
+.modal-head .m-meta { color: var(--muted); font-size: 0.84rem; margin-top: 3px; }
+.modal-head .m-loc { color: var(--muted); font-size: 0.78rem; margin-top: 4px; }
+.modal-close-x {
+  margin-inline-start: auto; border: none; background: rgba(45,42,62,0.06); color: var(--muted);
+  width: 34px; height: 34px; border-radius: 50%; font-size: 1rem; cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+}
+.modal-close-x:hover { background: rgba(45,42,62,0.12); color: var(--text); }
+
+.section-title { font-size: 0.78rem; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; margin: 20px 0 9px; }
+
+.agenda { display: flex; flex-direction: column; gap: 5px; }
+.agenda-item { display: flex; align-items: center; gap: 10px; padding: 9px 13px; border-radius: 13px; background: rgba(124,92,240,0.05); border: 1px solid transparent; flex-wrap: wrap; }
+.agenda-item .name { flex: 1; font-size: 0.92rem; }
+.agenda-item.quiz .name { color: #7c3aed; font-weight: 600; }
+.agenda-item.exam .name { color: #d2491a; font-weight: 800; }
+.agenda-item .material-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.material-link {
+  display: inline-flex; align-items: center; gap: 5px; text-decoration: none; color: var(--accent);
+  background: rgba(124,92,240,0.1); border: 1px solid rgba(124,92,240,0.25); border-radius: 999px;
+  padding: 4px 12px; font-size: 0.76rem; font-weight: 700; transition: all 0.15s; white-space: nowrap;
+}
+.material-link:hover { background: rgba(124,92,240,0.2); transform: translateY(-1px); }
+.material-link.prep { color: #b45309; background: rgba(236,139,51,0.12); border-color: rgba(236,139,51,0.3); }
+.material-link.prep:hover { background: rgba(236,139,51,0.22); }
+
+.pills { display: flex; flex-wrap: wrap; gap: 7px; }
+.pill { background: rgba(124,92,240,0.06); border: 1px solid rgba(124,92,240,0.14); border-radius: 999px; padding: 5px 13px; font-size: 0.82rem; }
+.pill.warn { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+
+mark { background: #fde68a; border-radius: 4px; padding: 0 2px; }
+
+.close-btn {
+  margin-top: 20px; background: linear-gradient(135deg, #8b5cf6, #6d4df0); color: #fff; border: none;
+  border-radius: 999px; padding: 10px 28px; font-family: inherit; font-size: 0.93rem; font-weight: 700;
+  cursor: pointer; transition: transform 0.13s, box-shadow 0.13s;
+}
+.close-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(124,92,240,0.4); }
+
+/* ===== responsive ===== */
+@media (max-width: 920px) {
+  .sidebar { position: static; width: auto; margin: 14px 14px 0; flex-direction: row; align-items: center; padding: 10px 14px; border-radius: 20px; gap: 2px; overflow-x: auto; }
+  .logo { padding: 0 6px 0 0; }
+  .logo .name { display: none; }
+  .nav-btn { padding: 9px 12px; white-space: nowrap; }
+  .nav-btn .count { display: none; }
+  .sidebar .spacer, .sidebar .synced-note { display: none; }
+  .layout { flex-direction: column; }
+  .content { margin-left: 0; padding: 22px 18px 50px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="scene">
+  <div class="sun"></div>
+  <div class="dune d1"></div>
+  <div class="dune d2"></div>
+  <div class="dune d3"></div>
+</div>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="logo">
+      <span class="mark">פ</span>
+      <span class="name">דאשבורד קורסים</span>
+    </div>
+
+    <button class="nav-btn active" data-filter="all">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+      הכל
+      <span class="count" id="count-all"></span>
+    </button>
+    <button class="nav-btn" data-filter="session">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      מפגשים
+      <span class="count" id="count-session"></span>
+    </button>
+    <button class="nav-btn" data-filter="exam">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+      מבחנים
+      <span class="count" id="count-exam"></span>
+    </button>
+
+    <div class="spacer"></div>
+    <div class="synced-note">הנתונים מתוך syllabus.rtf<br>עודכן 03/07/2026</div>
+  </aside>
+
+  <main class="content">
+    <header class="welcome">
+      <h1>שלום גבריאל 👋</h1>
+      <p class="sub">לוח מרכזי לשני הקורסים — לחצו על מפגש או מבחן כדי לראות את התוכן המלא</p>
+
+      <div class="track-toggle" role="tablist" aria-label="בחירת קורס">
+        <button class="active" data-course="all" role="tab">שני הקורסים</button>
+        <button data-course="1" role="tab">קורס 1</button>
+        <button data-course="2" role="tab">קורס 2</button>
+      </div>
+
+      <div class="hero-tools">
+        <div class="search-box">
+          <span class="search-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
+          <input type="search" id="search" placeholder="חיפוש נושא… (למשל: אנלוגיות, שטחים)" autocomplete="off">
+        </div>
+        <div class="progress-card">
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+          <span id="progress-label"></span>
+        </div>
+        <button class="next-jump" id="next-jump">⚡ האירוע הבא</button>
+      </div>
+    </header>
+
+    <div class="courses-info" id="courses-info"></div>
+
+    <div class="exam2-note">
+      💡 <strong>מבחן 2</strong> אינו מופיע בלוח השנה — הוא ניתן לתלמידים לפתרון עצמאי בבית, וההנחיות אליו ניתנות במפגש 7 (אסטרטגיה), בשני הקורסים.
+    </div>
+
+    <div id="timeline"></div>
+
+    <div class="quote">
+      <span class="spark">✦</span>
+      ״למידה היא לא מילוי של דלי, אלא הצתה של אש.״ — ויליאם בטלר ייטס
+    </div>
+  </main>
+</div>
+
+<div id="session-backdrop" class="modal-backdrop">
+  <div class="modal" role="dialog" aria-modal="true" id="session-modal"></div>
+</div>
+
+<script>
+// ===================== נתוני הקורסים =====================
+// נשלפו מתוך syllabus.rtf ו-technical info.rtf
+// תוקן: בקורס 2, מבחן 5 (20/08/2026) מסומן במקור כ"יום רביעי" אך זהו בפועל יום חמישי.
+
+const COURSES = {
+  1: {
+    id: 1, name: "טכני חיל האוויר באר שבע", grades: "תיכון א'–ד'",
+    type: "רגיל (פרונטלי, בוקר)", classCode: "PSTSFR0926ADMBSHBST1",
+    location: "דרך אילן רמון 1, באר שבע — חדר 513 (יב8)",
+    days: "ראשון ורביעי", hours: "09:00–13:30",
+    period: "8 ביולי 2026 עד 26 באוגוסט 2026", students: 24,
+    contacts: [
+      { role: "איש קשר קידום", name: "אחיקם כהן", phone: "052-6768572" },
+      { role: "אב בית / מפתח / ניקיון", name: "מאור", phone: "050-5203038" }
+    ],
+    notes: [
+      "עזרים וציוד: הכיתה כוללת מחשב, מקרן וחיבור לאינטרנט.",
+      "ספרי לימוד: התלמידים קיבלו את ערכות הספרים ישירות לביתם."
+    ],
+    palette: "pal-blue"
+  },
+  2: {
+    id: 2, name: "באר שבע עירוני ג' / מקיף ג'", grades: "תיכון ב'–ה'",
+    type: "קדם עתידים ויצ\"ו (פרונטלי, בוקר)", classCode: "PSTSFR0926BEMKAV2001",
+    location: "דרך שמשון 1, באר שבע — מתחם שכבת י\"ב, בחדר של שרית",
+    days: "שני וחמישי", hours: "09:00–13:30",
+    period: "9 ביולי 2026 עד 27 באוגוסט 2026", students: 16,
+    contacts: [
+      { role: "מדריך הקורס", name: "גבריאל ברמן", phone: "054-2347522" },
+      { role: "אב בית לוגיסטיקה", name: "מאיר", phone: "052-6116189" },
+      { role: "הנהלת בית הספר", name: "שרית מנשקו", phone: "052-3338229" },
+      { role: "הנהלת בית הספר", name: "אביבה", phone: "054-8442086" },
+      { role: "הנהלת בית הספר", name: "אפרת אברהם", phone: "054-7895287" }
+    ],
+    notes: [
+      "ניקיון: יש מנקים המסדרים ומנקים את הכיתה בסוף כל יום.",
+      "גיבוי טכנולוגי: קיים ציוד בחדר, אך יש בקשה מפורשת מהנהלת בית הספר שהמדריך יגיע עם גיבוי משלו (לפטופ או חומרים על דיסק און קי)."
+    ],
+    palette: "pal-green"
+  }
+};
+
+const SESSION_TOPICS = {
+  1: { label: "מפגש 1 (פתיחה)", topics: ["התכנסות + שיחת פתיחה", "מבחן פתיחה (אבחון)", "בעיות כלליות 1", "מבוא לאנגלית", "סיכום מפגש"] },
+  2: { label: "מפגש 2", topics: ["משוואות ואי-שוויונים", "אנלוגיות", "בעיות יחס", "מבוא למטלת הכתיבה"] },
+  3: { label: "מפגש 3", topics: ["שלבי חשיבה", "מצולעים", "ביטויים", "מטלת כתיבה – מבנה החיבור", "בוחן אנלוגיות + פתרון שאלות"] },
+  4: { label: "מפגש 4", topics: ["בעיות אחוזים", "שאלות פסקה (קריאה פסיכומטרית)", "הסקה מתרשים", "ניסוח מחדש", "בוחן אלגברה + פתרון שאלות"] },
+  5: { label: "מפגש 5", topics: ["מטלת כתיבה – פיתוח טיעון", "מעגלים", "השלמת משפטים בעברית", "בוחן ניסוח מחדש + פתרון שאלות"] },
+  6: { label: "מפגש 6", topics: ["קטע קריאה", "הבנת הנקרא באנגלית", "התנהגות אלגברית", "פעולות מומצאות", "בוחן השלמת משפטים מילולי"] },
+  7: { label: "מפגש 7 (אסטרטגיה)", topics: ["אסטרטגיה – פרק כמותי", "תצוגת תכלית כמותי", "אסטרטגיה – פרק מילולי", "אסטרטגיה – פרק אנגלית", "אסטרטגיה – מטלת כתיבה", "הנחיות לפתרון עצמאי של מבחן 2 בבית", "סיכום מפגש"] },
+  8: { label: "מפגש 8", topics: ["גאומטריה פסיכומטרית", "כללים וסידורים", "השלמת משפטים אנגלית", "בוחן בעיות כמותיות + פתרון שאלות", "שיחת אמצע קורס"] },
+  9: { label: "מפגש 9", topics: ["בעיות תנועה", "מטלת כתיבה – שגיאות נפוצות", "דמיון צורות", "משמעות מילולית", "בוחן גיאומטריה + פתרון שאלות"] },
+  10: { label: "מפגש 10", topics: ["שלמים", "עריכת ניסוי", "משפט פיתגורס", "בעיות הספק"] },
+  11: { label: "מפגש 11", topics: ["שטחים", "צירופים", "חלוקה", "שיחת פתיחה למרתון הסיום"] },
+  12: { label: "מפגש 12", topics: ["חזרות רוחביות (מקוצר)", "חזרות נושאיות", "פרויקט כלים פסיכומטריים", "פרויקט אסטרטגיה במילולי", "פרויקט אסטרטגיה בכמותי"] },
+  13: { label: "מפגש 13 (מודיעין, אחרון)", topics: ["עדכוני מודיעין כמותי", "עדכוני מודיעין מילולי", "שיחת סיכום קורס"] }
+};
+
+const EXAM_TOPICS = {
+  1: { label: "מבחן 1", duration: "150 דק׳ מבחן מלא", topics: ["הנחיות למבחן + הסבר בוחנים", "מבחן מלא", "סדנת שליחת חיבורים", "סדנת תחקור (ניתוח תוצאות)"], noTeaching: false },
+  3: { label: "מבחן 3", duration: "190 דק׳ מבחן מלא", topics: ["מבחן מלא בזום"], noTeaching: true },
+  4: { label: "מבחן 4", duration: "190 דק׳ מבחן מלא", topics: ["מבחן מלא"], noTeaching: true },
+  5: { label: "מבחן 5", duration: "190 דק׳ מבחן מלא", topics: ["התמודדות עם תסכול מסימולציות (סדנה)", "מבחן מלא"], noTeaching: false },
+  6: { label: "מבחן 6", duration: "190 דק׳ מבחן מלא", topics: ["תרגול כלים פסיכומטריים (פתרון חלקי בכיתה)", "מבחן מלא"], noTeaching: false },
+  7: { label: "מבחן 7", duration: "190 דק׳ מבחן מלא", topics: ["מבחן מלא בזום"], noTeaching: true }
+};
+
+// מצגות (PowerPoint) לכל נושא — מאוחסנות ב-Vercel Blob, משותפות לשני הקורסים (אותה תוכנית לימודים)
+const MATERIALS = {
+  s01: {
+    "התכנסות + שיחת פתיחה": [{ label: "שיחת פתיחה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s01/01.pptx" }],
+    "מבחן פתיחה (אבחון)": [{ label: "מבחן פתיחה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s01/02.pptx" }],
+    "בעיות כלליות 1": [{ label: "בעיות כלליות 1", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s01/03.pptx" }],
+    "מבוא לאנגלית": [{ label: "מבוא לאנגלית", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s01/04.pptx" }],
+  },
+  s02: {
+    "משוואות ואי-שוויונים": [{ label: "משוואות ואי-שוויונים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s02/01.pptx" }],
+    "אנלוגיות": [{ label: "אנלוגיות", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s02/02.pptx" }],
+    "בעיות יחס": [{ label: "בעיות יחס", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s02/03.pptx" }],
+    "מבוא למטלת הכתיבה": [{ label: "מבוא למטלת הכתיבה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s02/04.pptx" }],
+  },
+  s03: {
+    "שלבי חשיבה": [{ label: "שלבי חשיבה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s03/01.pptx" }],
+    "מצולעים": [{ label: "מצולעים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s03/02.pptx" }],
+    "ביטויים": [{ label: "ביטויים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s03/03.pptx" }],
+    "מטלת כתיבה – מבנה החיבור": [{ label: "מטלת כתיבה - מבנה החיבור", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s03/04.pptx" }],
+    "בוחן אנלוגיות + פתרון שאלות": [{ label: "בוחן אנלוגיות", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s03/05.pptx" }],
+  },
+  s04: {
+    "בעיות אחוזים": [{ label: "בעיות אחוזים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s04/01.pptx" }],
+    "שאלות פסקה (קריאה פסיכומטרית)": [{ label: "שאלות פסקה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s04/02.pptx" }],
+    "הסקה מתרשים": [{ label: "הסקה מתרשים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s04/03.pptx" }],
+    "ניסוח מחדש": [{ label: "ניסוח מחדש", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s04/04.pptx" }],
+    "בוחן אלגברה + פתרון שאלות": [{ label: "בוחן אלגברה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s04/05.pptx" }],
+  },
+  s05: {
+    "מטלת כתיבה – פיתוח טיעון": [{ label: "מטלת כתיבה - פיתוח טיעון", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s05/01.pptx" }],
+    "מעגלים": [{ label: "מעגלים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s05/02.pptx" }],
+    "השלמת משפטים בעברית": [{ label: "השלמת משפטים בעברית", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s05/03.pptx" }],
+    "בוחן ניסוח מחדש + פתרון שאלות": [{ label: "בוחן ניסוח מחדש", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s05/04.pptx" }],
+  },
+  s06: {
+    "קטע קריאה": [{ label: "קטע קריאה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s06/01.pptx" }],
+    "הבנת הנקרא באנגלית": [{ label: "הבנת הנקרא באנגלית", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s06/02.pptx" }],
+    "התנהגות אלגברית": [{ label: "התנהגות אלגברית", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s06/03.pptx" }],
+    "פעולות מומצאות": [{ label: "פעולות מומצאות", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s06/04.pptx" }],
+    "בוחן השלמת משפטים מילולי": [{ label: "בוחן השלמת משפטים מילולי", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s06/05.pptx" }],
+  },
+  s07: {
+    "אסטרטגיה – פרק כמותי": [{ label: "אסטרטגיה (כמותי, מילולי, אנגלית, תכלית)", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s07/01.pptx" }],
+    "אסטרטגיה – מטלת כתיבה": [{ label: "אסטרטגיה - מטלת כתיבה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s07/02.pptx" }],
+  },
+  s08: {
+    "גאומטריה פסיכומטרית": [{ label: "גאומטריה פסיכומטרית", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s08/01.pptx" }],
+    "כללים וסידורים": [{ label: "כללים וסידורים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s08/02.pptx" }],
+    "השלמת משפטים אנגלית": [{ label: "השלמת משפטים אנגלית", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s08/03.pptx" }],
+    "בוחן בעיות כמותיות + פתרון שאלות": [{ label: "בוחן בעיות כמותיות", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s08/04.pptx" }],
+    "שיחת אמצע קורס": [{ label: "שיחת אמצע", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s08/05.pptx" }],
+  },
+  s09: {
+    "בעיות תנועה": [{ label: "בעיות תנועה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s09/01.pptx" }],
+    "מטלת כתיבה – שגיאות נפוצות": [{ label: "מטלת כתיבה - שגיאות נפוצות", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s09/02.pptx" }],
+    "דמיון צורות": [{ label: "דמיון צורות", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s09/03.pptx" }],
+    "משמעות מילולית": [{ label: "משמעות מילולית", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s09/04.pptx" }],
+    "בוחן גיאומטריה + פתרון שאלות": [{ label: "בוחן גיאומטריה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s09/05.pptx" }],
+  },
+  s10: {
+    "שלמים": [{ label: "שלמים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s10/01.pptx" }],
+    "עריכת ניסוי": [{ label: "עריכת ניסוי", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s10/02.pptx" }],
+    "משפט פיתגורס": [{ label: "משפט פיתגורס", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s10/03.pptx" }],
+    "בעיות הספק": [{ label: "בעיות הספק", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s10/04.pptx" }],
+  },
+  s11: {
+    "שטחים": [{ label: "שטחים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s11/01.pptx" }],
+    "צירופים": [{ label: "צירופים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s11/02.pptx" }],
+    "חלוקה": [{ label: "חלוקה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s11/03.pptx" }],
+    "שיחת פתיחה למרתון הסיום": [{ label: "שיחת פתיחה למרתון", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s11/04.pptx" }],
+  },
+  s12: {
+    "חזרות רוחביות (מקוצר)": [{ label: "מפגש חזרות", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s12/01.pptx" }],
+    "פרויקט כלים פסיכומטריים": [{ label: "מפגש פרויקטים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s12/02.pptx" }, { label: "מצגת הפרויקטים הגדולה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s12/03.pptx" }],
+  },
+  s13: {
+    "עדכוני מודיעין כמותי": [{ label: "עדכוני מודיעין (כמותי+מילולי)", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/s13/01.pptx" }],
+  },
+  e01: {
+    "הנחיות למבחן + הסבר בוחנים": [{ label: "מבחנים בקורס", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/e01/01.pptx" }],
+    "סדנת שליחת חיבורים": [{ label: "סדנת שליחת חיבורים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/e01/02.pptx" }],
+    "סדנת תחקור (ניתוח תוצאות)": [{ label: "סדנת תחקור", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/e01/03.pptx" }],
+  },
+  e05: {
+    "התמודדות עם תסכול מסימולציות (סדנה)": [{ label: "התמודדות עם אכזבה מסימולציה", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/e05/01.pptx" }],
+  },
+  e06: {
+    "תרגול כלים פסיכומטריים (פתרון חלקי בכיתה)": [{ label: "תרגול כלים פסיכומטריים", url: "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/e06/01.pptx" }],
+  },
+};
+
+// הכנה למדריך — מצגות מיזוג (שקפי השיעור + הפתרונות מהמערך), נבנות בהדרגה
+// מאוחסנות באותו Vercel Blob תחת materials/prep/. המפתח חייב להיות זהה לשם הנושא ב-SESSION_TOPICS/EXAM_TOPICS.
+const PREP_BASE = "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/prep/";
+const PREP = {
+  s01: {
+    "התכנסות + שיחת פתיחה": "s01/01.pptx",
+    "מבחן פתיחה (אבחון)": "s01/02.pptx",
+    "בעיות כלליות 1": "s01/03.pptx",
+    "מבוא לאנגלית": "s01/04.pptx",
+  },
+  s02: {
+    "משוואות ואי-שוויונים": "s02/01.pptx",
+    "אנלוגיות": "s02/02.pptx",
+    "בעיות יחס": "s02/03.pptx",
+    "מבוא למטלת הכתיבה": "s02/04.pptx",
+  },
+  s03: {
+    "ביטויים": "s03/03.pptx",
+  },
+};
+
+function ev(course, type, sessionNum, dateISO, weekday, extra) {
+  extra = extra || {};
+  let label, topics = [], duration = null, noTeaching = false;
+  if (type === "session") { const s = SESSION_TOPICS[sessionNum]; label = s.label; topics = s.topics; }
+  else if (type === "exam") { const e = EXAM_TOPICS[sessionNum]; label = e.label; topics = e.topics; duration = e.duration; noTeaching = e.noTeaching; }
+  else if (type === "holiday") { label = extra.label || "אין מפגש"; }
+  else if (type === "milestone") { label = extra.label; }
+  return Object.assign({ course, type, sessionNum, date: dateISO, weekday, label, topics, duration, noTeaching }, extra);
+}
+
+const SCHEDULE = [
+  ev(1, "session", 1, "2026-07-08", "רביעי"),
+  ev(1, "session", 2, "2026-07-12", "ראשון"),
+  ev(1, "session", 3, "2026-07-15", "רביעי"),
+  ev(1, "session", 4, "2026-07-19", "ראשון"),
+  ev(1, "session", 5, "2026-07-21", "שלישי", { note: "הוזז מרביעי לשלישי בגלל צום תשעה באב" }),
+  ev(1, "exam", 1, "2026-07-26", "ראשון"),
+  ev(1, "session", 6, "2026-07-29", "רביעי"),
+  ev(1, "session", 7, "2026-08-02", "ראשון"),
+  ev(1, "session", 8, "2026-08-05", "רביעי"),
+  ev(1, "exam", 3, "2026-08-07", "שישי", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+  ev(1, "session", 9, "2026-08-09", "ראשון"),
+  ev(1, "session", 10, "2026-08-12", "רביעי"),
+  ev(1, "exam", 4, "2026-08-14", "שישי", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+  ev(1, "session", 11, "2026-08-16", "ראשון"),
+  ev(1, "exam", 5, "2026-08-18", "שלישי"),
+  ev(1, "session", 12, "2026-08-19", "רביעי"),
+  ev(1, "session", 13, "2026-08-23", "ראשון"),
+  ev(1, "exam", 6, "2026-08-25", "שלישי"),
+  ev(1, "exam", 7, "2026-08-30", "ראשון", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+
+  ev(2, "session", 1, "2026-07-09", "חמישי"),
+  ev(2, "session", 2, "2026-07-13", "שני"),
+  ev(2, "session", 3, "2026-07-16", "חמישי"),
+  ev(2, "session", 4, "2026-07-20", "שני"),
+  ev(2, "holiday", null, "2026-07-23", "חמישי", { label: "אין מפגש — חופש (ט' באב)" }),
+  ev(2, "session", 5, "2026-07-27", "שני"),
+  ev(2, "exam", 1, "2026-07-28", "שלישי"),
+  ev(2, "session", 6, "2026-07-30", "חמישי"),
+  ev(2, "session", 7, "2026-08-03", "שני"),
+  ev(2, "session", 8, "2026-08-06", "חמישי"),
+  ev(2, "exam", 3, "2026-08-07", "שישי", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+  ev(2, "session", 9, "2026-08-10", "שני"),
+  ev(2, "session", 10, "2026-08-13", "חמישי"),
+  ev(2, "exam", 4, "2026-08-14", "שישי", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+  ev(2, "session", 11, "2026-08-17", "שני"),
+  ev(2, "exam", 5, "2026-08-20", "חמישי", { note: "תוקן מ\"יום רביעי\" במסמך המקור — 20/08/2026 חל ביום חמישי. זהו יום הבחינה במקום המפגש הרגיל." }),
+  ev(2, "session", 12, "2026-08-24", "שני"),
+  ev(2, "exam", 6, "2026-08-25", "שלישי"),
+  ev(2, "session", 13, "2026-08-27", "חמישי"),
+  ev(2, "exam", 7, "2026-08-30", "ראשון", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+
+  ev(0, "milestone", null, "2026-09-02", "רביעי", {
+    label: "המבחן הפסיכומטרי האמיתי (חלון אפשרי)",
+    note: "התאריך המדויק (02/09 או 03/09) תלוי בהרשמה העצמאית של כל תלמיד מול המרכז הארצי להערכה ולבחינות."
+  })
+];
+
+// ===================== עזרים =====================
+const HEB_MONTHS = ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
+const TYPE_LABELS = { session: "מפגש", exam: "מבחן", holiday: "חופש", milestone: "אבן דרך" };
+const CTA_LABELS = { session: "פרטי המפגש", exam: "פרטי המבחן", holiday: "פרטים", milestone: "פרטים" };
+const PALETTE_BY_TYPE = { exam: "pal-peach", holiday: "pal-gray", milestone: "pal-purple" };
+
+const ICONS = {
+  session: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+  exam: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>',
+  holiday: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>',
+  milestone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>'
+};
+
+function el(tag, cls, html) { const n = document.createElement(tag); if (cls) n.className = cls; if (html !== undefined) n.innerHTML = html; return n; }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function todayISO() { return new Date().toISOString().slice(0, 10); }
+function fmtDom(d) { return parseInt(d.slice(8, 10), 10); }
+function fmtMonShort(d) { return HEB_MONTHS[parseInt(d.slice(5, 7), 10) - 1].slice(0, 3) + "׳"; }
+function monthKey(d) { return d.slice(0, 7); }
+function monthLabel(d) { const [y, m] = d.split("-"); return HEB_MONTHS[parseInt(m, 10) - 1] + " " + y; }
+
+function highlight(text, query) {
+  if (!query) return esc(text);
+  const idx = text.indexOf(query);
+  if (idx === -1) return esc(text);
+  return esc(text.slice(0, idx)) + "<mark>" + esc(text.slice(idx, idx + query.length)) + "</mark>" + esc(text.slice(idx + query.length));
+}
+
+function paletteFor(e) {
+  if (PALETTE_BY_TYPE[e.type]) return PALETTE_BY_TYPE[e.type];
+  return COURSES[e.course] ? COURSES[e.course].palette : "pal-purple";
+}
+function accentFor(e) {
+  const map = { "pal-blue": "#3f7fe8", "pal-green": "#14a06f", "pal-peach": "#ec8b33", "pal-gray": "#8b87a0", "pal-purple": "#7c5cf0" };
+  return map[paletteFor(e)];
+}
+
+// ===================== state =====================
+const today = todayISO();
+const state = { course: "all", type: "all", query: "" };
+
+const sorted = SCHEDULE.slice().sort((a, b) => a.date.localeCompare(b.date));
+const nextEvent = sorted.find(e => e.date >= today) || null;
+
+function matchesQuery(e) {
+  if (!state.query) return true;
+  const q = state.query;
+  if (e.label.includes(q)) return true;
+  return (e.topics || []).some(t => t.includes(q));
+}
+
+function filteredEvents(opts) {
+  opts = opts || {};
+  return sorted.filter(e => {
+    if (!opts.ignoreCourse && state.course !== "all" && String(e.course) !== state.course && e.course !== 0) return false;
+    if (!opts.ignoreType && state.type !== "all" && e.type !== state.type) return false;
+    if (!opts.ignoreQuery && !matchesQuery(e)) return false;
+    return true;
+  });
+}
+
+// ===================== course info panels =====================
+function renderCourseInfo() {
+  const root = document.getElementById("courses-info");
+  root.innerHTML = "";
+  const ids = state.course === "all" ? [1, 2] : [Number(state.course)];
+  ids.forEach(id => {
+    const c = COURSES[id];
+    const card = el("div", `info-panel ${c.palette}`);
+    card.innerHTML = `
+      <h2>קורס ${id}: ${c.name}</h2>
+      <div class="grades">${c.grades} · ${c.type}</div>
+      <dl>
+        <div class="row"><dt>מיקום</dt><dd>${c.location}</dd></div>
+        <div class="row"><dt>ימי לימוד</dt><dd>${c.days}, ${c.hours}</dd></div>
+        <div class="row"><dt>תקופה</dt><dd>${c.period}</dd></div>
+        <div class="row"><dt>נרשמים</dt><dd>${c.students} תלמידים</dd></div>
+        <div class="row"><dt>מק"ט כיתה</dt><dd style="direction:ltr;unicode-bidi:isolate;text-align:left;">${c.classCode}</dd></div>
+      </dl>
+      <div class="contacts">${c.contacts.map(ct => `<div class="contact-line"><span>${ct.role}: ${ct.name}</span><a href="tel:${ct.phone.replace(/-/g,'')}">${ct.phone}</a></div>`).join("")}</div>
+      <div class="notes">${c.notes.map(n => `<div>${n}</div>`).join("")}</div>
+    `;
+    root.appendChild(card);
+  });
+}
+
+// ===================== chrome (counts, progress) =====================
+function renderChrome() {
+  const inCourse = filteredEvents({ ignoreType: true, ignoreQuery: true });
+  const counts = { all: inCourse.length, session: 0, exam: 0 };
+  inCourse.forEach(e => { if (e.type === "session") counts.session++; if (e.type === "exam") counts.exam++; });
+  document.getElementById("count-all").textContent = counts.all;
+  document.getElementById("count-session").textContent = counts.session;
+  document.getElementById("count-exam").textContent = counts.exam;
+
+  const teachable = inCourse.filter(e => e.type === "session" || e.type === "exam");
+  const done = teachable.filter(e => e.date < today).length;
+  const total = teachable.length || 1;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById("progress-label").textContent = `${done}/${teachable.length} הושלמו`;
+  requestAnimationFrame(() => setTimeout(() => { document.getElementById("progress-fill").style.width = pct + "%"; }, 80));
+}
+
+// ===================== cards =====================
+function renderCard(e) {
+  const palette = paletteFor(e);
+  const card = el("article", `session-card ${palette}`);
+  card.id = "card-" + e.course + "-" + e.type + "-" + e.date;
+  const isPast = e.date < today;
+  const isNext = nextEvent && e === nextEvent;
+  if (isPast) card.classList.add("past");
+  if (isNext) card.classList.add("next");
+
+  let status = isNext ? '<span class="status-chip next">הבא ⚡</span>' : isPast ? '<span class="status-chip">✓ עבר</span>' : "";
+  if (e.noTeaching) status += '<span class="status-chip warn">לא בהוראה</span>';
+
+  const courseTag = e.course === 0 ? "" : `<span>קורס ${e.course}</span>`;
+
+  card.innerHTML = `
+    <div class="art"></div>
+    <div class="orb"></div>
+    <div class="card-top">
+      <span class="card-num">${fmtDom(e.date)}<span class="mon">${fmtMonShort(e.date)}</span></span>
+      <span class="corner-icon">${ICONS[e.type]}</span>
+    </div>
+    <div class="card-title-area">
+      <h3>${highlight(e.label, state.query)}</h3>
+      <div class="card-sub">
+        ${courseTag}<span>יום ${e.weekday}</span>${status}
+      </div>
+      ${e.note ? `<div class="card-note">${esc(e.note.length > 60 ? e.note.slice(0, 57) + "…" : e.note)}</div>` : ""}
+    </div>
+    <button class="cta">${CTA_LABELS[e.type]}<span class="arrow">←</span></button>
+  `;
+  card.querySelector(".cta").addEventListener("click", () => openModal(e));
+  return card;
+}
+
+function renderTimeline() {
+  const root = document.getElementById("timeline");
+  root.innerHTML = "";
+  const visible = filteredEvents();
+
+  if (!visible.length) {
+    root.appendChild(el("div", "empty-state", `לא נמצאו תוצאות${state.query ? ` עבור "<b>${esc(state.query)}</b>"` : ""} 🤷`));
+    return;
+  }
+
+  let currentMonth = null;
+  let grid = null;
+  visible.forEach(e => {
+    const mk = monthKey(e.date);
+    if (mk !== currentMonth) {
+      currentMonth = mk;
+      const monthEvents = visible.filter(x => monthKey(x.date) === mk);
+      root.appendChild(el("div", "week-header", `<span class="week-num">${monthLabel(e.date)}</span><span class="week-dates">${monthEvents.length} אירועים</span>`));
+      grid = el("div", "cards-grid");
+      root.appendChild(grid);
+    }
+    grid.appendChild(renderCard(e));
+  });
+}
+
+// ===================== modal =====================
+function classifyTopic(t) {
+  if (t.includes("מבחן מלא") || t.includes("מבחן פתיחה")) return "exam";
+  if (t.includes("בוחן")) return "quiz";
+  return "topic";
+}
+
+function sessionKey(e) {
+  if (e.type === "session") return "s" + String(e.sessionNum).padStart(2, "0");
+  if (e.type === "exam") return "e" + String(e.sessionNum).padStart(2, "0");
+  return null;
+}
+
+function materialsFor(e, topic) {
+  const key = sessionKey(e);
+  if (!key || !MATERIALS[key]) return [];
+  return MATERIALS[key][topic] || [];
+}
+
+function prepFor(e, topic) {
+  const key = sessionKey(e);
+  if (!key || !PREP[key] || !PREP[key][topic]) return null;
+  return PREP_BASE + PREP[key][topic];
+}
+
+function openModal(e) {
+  const modal = document.getElementById("session-modal");
+  modal.className = `modal ${paletteFor(e)}`;
+  modal.innerHTML = "";
+
+  const courseName = e.course === 0 ? "שני הקורסים" : `קורס ${e.course} — ${COURSES[e.course].name}`;
+  const head = el("div", "modal-head");
+  head.innerHTML = `
+    <span class="m-num">${fmtDom(e.date)}<br><small style="font-size:0.55em;">${fmtMonShort(e.date)}</small></span>
+    <div>
+      <h3>${esc(e.label)}</h3>
+      <div class="m-meta">${TYPE_LABELS[e.type]} · יום ${e.weekday}, ${fmtDom(e.date)} ב${monthLabel(e.date)}</div>
+      <div class="m-loc">${courseName}${e.course !== 0 ? " · 📍 " + COURSES[e.course].location : ""}</div>
+    </div>
+    <button class="modal-close-x" data-close>✕</button>
+  `;
+  modal.appendChild(head);
+
+  if (e.duration) {
+    const pillsWrap = el("div", "pills");
+    pillsWrap.appendChild(el("span", "pill", esc(e.duration)));
+    modal.appendChild(pillsWrap);
+  }
+
+  if (e.noTeaching) {
+    modal.appendChild(el("div", "section-title", "⚠️ שימו לב"));
+    const w = el("div", "pills");
+    w.appendChild(el("span", "pill warn", "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית באותו יום"));
+    modal.appendChild(w);
+  }
+
+  if (e.topics && e.topics.length) {
+    modal.appendChild(el("div", "section-title", "🗓️ תוכן " + (e.type === "exam" ? "המבחן" : "המפגש")));
+    const list = el("div", "agenda");
+    e.topics.forEach(t => {
+      const kind = classifyTopic(t);
+      const mats = materialsFor(e, t);
+      const prepUrl = prepFor(e, t);
+      const row = el("div", `agenda-item ${kind}`);
+      let linksHtml = mats.map(m => `<a class="material-link" href="${m.url}" target="_blank" rel="noopener">📊 ${esc(m.label)}</a>`).join("");
+      if (prepUrl) linksHtml += `<a class="material-link prep" href="${prepUrl}" target="_blank" rel="noopener">🧑‍🏫 הכנה למדריך</a>`;
+      row.innerHTML = `<span class="name">${highlight(t, state.query)}</span>${linksHtml ? `<span class="material-links">${linksHtml}</span>` : ""}`;
+      list.appendChild(row);
+    });
+    modal.appendChild(list);
+  }
+
+  if (e.note) {
+    modal.appendChild(el("div", "section-title", "📌 הערה"));
+    const w = el("div", "pills");
+    w.appendChild(el("span", "pill", esc(e.note)));
+    modal.appendChild(w);
+  }
+
+  const closeBtn = el("button", "close-btn", "סגירה");
+  closeBtn.addEventListener("click", closeModal);
+  modal.appendChild(closeBtn);
+  modal.querySelector(".modal-close-x").addEventListener("click", closeModal);
+
+  document.getElementById("session-backdrop").classList.add("show");
+}
+function closeModal() { document.getElementById("session-backdrop").classList.remove("show"); }
+
+// ===================== interactions =====================
+function setupNav() {
+  document.querySelectorAll(".track-toggle button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".track-toggle button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      state.course = btn.dataset.course;
+      renderCourseInfo();
+      renderChrome();
+      renderTimeline();
+    });
+  });
+
+  document.querySelectorAll(".nav-btn[data-filter]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".nav-btn[data-filter]").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      state.type = btn.dataset.filter;
+      renderTimeline();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+
+  document.getElementById("next-jump").addEventListener("click", () => {
+    if (!nextEvent) return;
+    document.querySelectorAll(".track-toggle button").forEach(b => b.classList.toggle("active", b.dataset.course === "all"));
+    document.querySelectorAll(".nav-btn[data-filter]").forEach(b => b.classList.toggle("active", b.dataset.filter === "all"));
+    state.course = "all"; state.type = "all"; state.query = ""; document.getElementById("search").value = "";
+    renderCourseInfo(); renderChrome(); renderTimeline();
+    requestAnimationFrame(() => {
+      const card = document.getElementById("card-" + nextEvent.course + "-" + nextEvent.type + "-" + nextEvent.date);
+      if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+  });
+
+  const search = document.getElementById("search");
+  let timer;
+  search.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { state.query = search.value.trim(); renderTimeline(); }, 150);
+  });
+
+  document.getElementById("session-backdrop").addEventListener("click", (ev) => { if (ev.target.id === "session-backdrop") closeModal(); });
+  document.addEventListener("keydown", (ev) => { if (ev.key === "Escape") closeModal(); });
+}
+
+function init() {
+  renderCourseInfo();
+  renderChrome();
+  renderTimeline();
+  setupNav();
+}
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
