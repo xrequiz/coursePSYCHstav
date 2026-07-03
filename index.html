@@ -816,6 +816,11 @@ function prepFor(e, topic) {
   return PREP_BASE + PREP[key][topic];
 }
 
+// צפייה ב-pptx בדפדפן דרך Office Online — דורש שהקובץ נגיש ציבורית (Vercel Blob public)
+function pptxViewerUrl(url) {
+  return "https://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(url);
+}
+
 function openModal(e) {
   const modal = document.getElementById("session-modal");
   modal.className = `modal ${paletteFor(e)}`;
@@ -856,7 +861,7 @@ function openModal(e) {
       const prepUrl = prepFor(e, t);
       const row = el("div", `agenda-item ${kind}`);
       let linksHtml = mats.map(m => `<a class="material-link" href="${m.url}" target="_blank" rel="noopener">📊 ${esc(m.label)}</a>`).join("");
-      if (prepUrl) linksHtml += `<a class="material-link prep" href="${prepUrl}" target="_blank" rel="noopener">🧑‍🏫 הכנה למדריך</a>`;
+      if (prepUrl) linksHtml += `<a class="material-link prep" href="${pptxViewerUrl(prepUrl)}" target="_blank" rel="noopener">🧑‍🏫 הכנה למדריך</a><a class="material-link prep" href="${prepUrl}" target="_blank" rel="noopener" title="הורדת הקובץ">⬇️</a>`;
       row.innerHTML = `<span class="name">${highlight(t, state.query)}</span>${linksHtml ? `<span class="material-links">${linksHtml}</span>` : ""}`;
       list.appendChild(row);
     });
