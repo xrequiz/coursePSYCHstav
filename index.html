@@ -269,6 +269,14 @@ body {
 .agenda-item.quiz .name { color: #7c3aed; font-weight: 600; }
 .agenda-item.exam .name { color: #d2491a; font-weight: 800; }
 .agenda-item .material-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.agenda-time {
+  flex-shrink: 0; font-size: 0.72rem; font-weight: 700; color: var(--accent-c, var(--accent));
+  background: rgba(124,92,240,0.1); border-radius: 999px; padding: 3px 10px; white-space: nowrap;
+}
+.agenda-note {
+  flex-basis: 100%; font-size: 0.78rem; color: #6b21a8; background: rgba(124,92,240,0.06);
+  border-radius: 10px; padding: 7px 11px; margin-top: 2px;
+}
 .material-link {
   display: inline-flex; align-items: center; gap: 5px; text-decoration: none; color: var(--accent);
   background: rgba(124,92,240,0.1); border: 1px solid rgba(124,92,240,0.25); border-radius: 999px;
@@ -549,6 +557,114 @@ const MATERIALS = {
   },
 };
 
+// זמן (בדקות) והערות לכל נושא בתוך מפגש/מבחן — נשלף מתוך סילבוס 0926 - תיכון.csv (עמודות "פרונטלי")
+const TOPIC_DETAILS = {
+  s01: {
+    "התכנסות + שיחת פתיחה": { time: 40, notes: "להנחות לפתור אבר\"ם בבית" },
+    "מבחן פתיחה (אבחון)": { time: 70 },
+    "בעיות כלליות 1": { time: 75 },
+    "מבוא לאנגלית": { time: 35 },
+    "סיכום מפגש": { time: 10 },
+  },
+  s02: {
+    "משוואות ואי-שוויונים": { time: 70, notes: "סרטון צפייה בבית: משולשים" },
+    "אנלוגיות": { time: 60 },
+    "בעיות יחס": { time: 60 },
+    "מבוא למטלת הכתיבה": { time: 35 },
+  },
+  s03: {
+    "שלבי חשיבה": { time: 20 },
+    "מצולעים": { time: 60 },
+    "ביטויים": { time: 60 },
+    "מטלת כתיבה – מבנה החיבור": { time: 60 },
+    "בוחן אנלוגיות + פתרון שאלות": { time: 30 },
+  },
+  s04: {
+    "בעיות אחוזים": { time: 60, notes: "סרטון צפייה בבית: בעיות ממוצע" },
+    "שאלות פסקה (קריאה פסיכומטרית)": { time: 60 },
+    "הסקה מתרשים": { time: 45 },
+    "ניסוח מחדש": { time: 45 },
+    "בוחן אלגברה + פתרון שאלות": { time: 20 },
+  },
+  s05: {
+    "מטלת כתיבה – פיתוח טיעון": { time: 70, notes: "סרטון לצפייה בבית: גאומטריה אנליטית" },
+    "מעגלים": { time: 60 },
+    "השלמת משפטים בעברית": { time: 70 },
+    "בוחן ניסוח מחדש + פתרון שאלות": { time: 30 },
+  },
+  s06: {
+    "קטע קריאה": { time: 60, notes: "סרטון לצפייה בבית: אותיות וספרות" },
+    "הבנת הנקרא באנגלית": { time: 45 },
+    "התנהגות אלגברית": { time: 50 },
+    "פעולות מומצאות": { time: 40 },
+    "בוחן השלמת משפטים מילולי": { time: 30 },
+  },
+  s07: {
+    "אסטרטגיה – פרק כמותי": { time: 50, notes: "דף תשובות פרקי אסטרטגיה נמצא בחוברת הדגשים" },
+    "תצוגת תכלית כמותי": { time: 40 },
+    "אסטרטגיה – פרק מילולי": { time: 50 },
+    "אסטרטגיה – פרק אנגלית": { time: 30 },
+    "אסטרטגיה – מטלת כתיבה": { time: 50 },
+    "הנחיות לפתרון עצמאי של מבחן 2 בבית": { notes: "יש לתת הנחיות לתכנון אסטרטגיה ולפתרון עצמאי של מבחן 2" },
+    "סיכום מפגש": { time: 5 },
+  },
+  s08: {
+    "גאומטריה פסיכומטרית": { time: 60, notes: "סרטון צפייה בבית: כלליות 2" },
+    "כללים וסידורים": { time: 60 },
+    "השלמת משפטים אנגלית": { time: 45 },
+    "בוחן בעיות כמותיות + פתרון שאלות": { time: 35 },
+    "שיחת אמצע קורס": { time: 25 },
+  },
+  s09: {
+    "בעיות תנועה": { time: 55, notes: "סרטון צפייה בבית: חיובי שלילי ערך מוחלט" },
+    "מטלת כתיבה – שגיאות נפוצות": { time: 50 },
+    "דמיון צורות": { time: 45 },
+    "משמעות מילולית": { time: 45 },
+    "בוחן גיאומטריה + פתרון שאלות": { time: 30 },
+  },
+  s10: {
+    "שלמים": { time: 60, notes: "סרטון צפייה בבית: עצרת" },
+    "עריכת ניסוי": { time: 55 },
+    "משפט פיתגורס": { time: 50 },
+    "בעיות הספק": { time: 60 },
+  },
+  s11: {
+    "שטחים": { time: 70, notes: "סרטון לצפייה בבית: תלת ממד" },
+    "צירופים": { time: 60 },
+    "חלוקה": { time: 50 },
+    "שיחת פתיחה למרתון הסיום": { time: 45 },
+  },
+  s12: {
+    "חזרות רוחביות (מקוצר)": { time: 55 },
+    "חזרות נושאיות": { time: 45 },
+    "פרויקט כלים פסיכומטריים": { time: 45 },
+    "פרויקט אסטרטגיה במילולי": { time: 35 },
+    "פרויקט אסטרטגיה בכמותי": { time: 35 },
+  },
+  s13: {
+    "עדכוני מודיעין כמותי": { time: 100, notes: "יש להדפיס מבעוד מועד" },
+    "עדכוני מודיעין מילולי": { time: 100 },
+    "שיחת סיכום קורס": { time: 40 },
+  },
+  e01: {
+    "הנחיות למבחן + הסבר בוחנים": { time: 30 },
+    "מבחן מלא": { time: 150 },
+    "סדנת שליחת חיבורים": { time: 10 },
+    "סדנת תחקור (ניתוח תוצאות)": { time: 55 },
+  },
+  e03: { "מבחן מלא בזום": { time: 190 } },
+  e04: { "מבחן מלא": { time: 190 } },
+  e05: {
+    "התמודדות עם תסכול מסימולציות (סדנה)": { time: 60, notes: "סרטון לצפייה בבית: הסתברות" },
+    "מבחן מלא": { time: 190 },
+  },
+  e06: {
+    "תרגול כלים פסיכומטריים (פתרון חלקי בכיתה)": { time: 60 },
+    "מבחן מלא": { time: 190 },
+  },
+  e07: { "מבחן מלא בזום": { time: 190 } },
+};
+
 // הכנה למדריך — מצגות מיזוג (שקפי השיעור + הפתרונות מהמערך), נבנות בהדרגה
 // מאוחסנות באותו Vercel Blob תחת materials/prep/. המפתח חייב להיות זהה לשם הנושא ב-SESSION_TOPICS/EXAM_TOPICS.
 const PREP_BASE = "https://9y8omlumisjezkwc.public.blob.vercel-storage.com/materials/prep/";
@@ -816,6 +932,12 @@ function prepFor(e, topic) {
   return PREP_BASE + PREP[key][topic];
 }
 
+function detailsFor(e, topic) {
+  const key = sessionKey(e);
+  if (!key || !TOPIC_DETAILS[key]) return null;
+  return TOPIC_DETAILS[key][topic] || null;
+}
+
 // צפייה ב-pptx בדפדפן דרך Office Online — דורש שהקובץ נגיש ציבורית (Vercel Blob public)
 function pptxViewerUrl(url) {
   return "https://view.officeapps.live.com/op/view.aspx?src=" + encodeURIComponent(url);
@@ -859,10 +981,13 @@ function openModal(e) {
       const kind = classifyTopic(t);
       const mats = materialsFor(e, t);
       const prepUrl = prepFor(e, t);
+      const detail = detailsFor(e, t);
       const row = el("div", `agenda-item ${kind}`);
       let linksHtml = mats.map(m => `<a class="material-link" href="${m.url}" target="_blank" rel="noopener">📊 ${esc(m.label)}</a>`).join("");
       if (prepUrl) linksHtml += `<a class="material-link prep" href="${pptxViewerUrl(prepUrl)}" target="_blank" rel="noopener">🧑‍🏫 הכנה למדריך</a><a class="material-link prep" href="${prepUrl}" target="_blank" rel="noopener" title="הורדת הקובץ">⬇️</a>`;
-      row.innerHTML = `<span class="name">${highlight(t, state.query)}</span>${linksHtml ? `<span class="material-links">${linksHtml}</span>` : ""}`;
+      const timeHtml = detail && detail.time ? `<span class="agenda-time">⏱ ${detail.time} דק׳</span>` : "";
+      const noteHtml = detail && detail.notes ? `<div class="agenda-note">📝 ${esc(detail.notes)}</div>` : "";
+      row.innerHTML = `<span class="name">${highlight(t, state.query)}</span>${timeHtml}${linksHtml ? `<span class="material-links">${linksHtml}</span>` : ""}${noteHtml}`;
       list.appendChild(row);
     });
     modal.appendChild(list);
