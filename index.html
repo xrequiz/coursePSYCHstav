@@ -301,6 +301,62 @@ mark { background: #fde68a; border-radius: 4px; padding: 0 2px; }
 }
 .close-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(124,92,240,0.4); }
 
+/* ===== next-up banner ===== */
+#next-up { margin: 26px 0 0; }
+.next-banner {
+  position: relative; overflow: hidden; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255,255,255,0.94) 30%, var(--p2, #efe9fd) 100%);
+  border: 1px solid rgba(255,255,255,0.9); box-shadow: var(--shadow); padding: 22px 24px;
+}
+.next-banner::before { content:""; position:absolute; inset-inline-start:0; top:0; bottom:0; width:5px; background: var(--accent-c, var(--accent)); }
+.nb-head { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.nb-date { font-size: 2.3rem; font-weight: 800; line-height: 1; color: var(--accent-c, var(--accent)); }
+.nb-date .mon { font-size: 0.8rem; font-weight: 700; margin-inline-start: 3px; }
+.nb-main { flex: 1; min-width: 200px; }
+.nb-kicker { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em; color: var(--accent-c, var(--accent)); }
+.nb-main h2 { margin: 2px 0 3px; font-size: 1.25rem; }
+.nb-meta { font-size: 0.83rem; color: var(--muted); display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+.nb-course { font-size: 0.72rem; font-weight: 700; color: #fff; background: var(--c, var(--accent)); border-radius: 999px; padding: 2px 10px; }
+.nb-more {
+  border: none; border-radius: 999px; padding: 10px 20px; font-family: inherit; font-size: 0.86rem; font-weight: 700;
+  color: #fff; background: var(--accent-c, var(--accent)); cursor: pointer;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent-c, var(--accent)) 38%, transparent); transition: transform 0.15s;
+}
+.nb-more:hover { transform: translateY(-2px); }
+.nb-holiday { margin-top: 12px; font-size: 0.8rem; color: #6b21a8; background: rgba(124,92,240,0.07); border-radius: 12px; padding: 8px 12px; }
+.nb-topics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; position: relative; z-index: 1; }
+.nb-chip-group { display: inline-flex; gap: 3px; }
+.nb-plain { font-size: 0.76rem; color: var(--muted); background: rgba(255,255,255,0.6); border: 1px dashed var(--line); border-radius: 999px; padding: 4px 12px; }
+.nb-topics .material-link small { font-weight: 500; opacity: 0.8; }
+
+/* ===== month calendar ===== */
+.calendar-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin: 22px 0 0; }
+.cal-month { background: var(--glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.9); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 18px 16px; }
+.cal-title { display: flex; justify-content: space-between; align-items: baseline; font-weight: 800; font-size: 1rem; margin: 0 4px 10px; }
+.cal-count { font-size: 0.72rem; font-weight: 600; color: var(--muted); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-dow { text-align: center; font-size: 0.66rem; font-weight: 700; color: var(--muted); padding: 2px 0 4px; }
+.cal-day { position: relative; min-height: 48px; border-radius: 11px; padding: 4px 6px; font-size: 0.75rem; color: var(--muted); background: rgba(255,255,255,0.32); }
+.cal-day.empty { background: transparent; }
+.cal-day.has-events { cursor: pointer; background: rgba(255,255,255,0.75); color: var(--text); font-weight: 600; transition: transform 0.15s, box-shadow 0.15s; }
+.cal-day.has-events:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.cal-day.past { opacity: 0.5; }
+.cal-day.today { outline: 2px solid var(--accent); outline-offset: -2px; background: rgba(124,92,240,0.14); color: var(--accent); }
+.cal-dots { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+.cal-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.cal-dot.exam { border-radius: 2.5px; }
+.cal-legend { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.74rem; color: var(--muted); padding: 2px 6px 0; }
+.cal-legend > span { display: inline-flex; align-items: center; gap: 5px; }
+
+.day-pick {
+  display: flex; align-items: center; gap: 8px; width: 100%; text-align: start; border: 1px solid rgba(124,92,240,0.15);
+  background: rgba(255,255,255,0.7); border-radius: 13px; padding: 12px 14px; font-family: inherit; font-size: 0.9rem;
+  color: var(--text); cursor: pointer; transition: all 0.15s; border-inline-start: 4px solid var(--c, var(--accent));
+}
+.day-pick:hover { background: #fff; transform: translateY(-1px); box-shadow: var(--shadow); }
+.day-pick b { color: var(--c, var(--accent)); }
+.day-pick .arrow { margin-inline-start: auto; }
+
 /* ===== responsive ===== */
 @media (max-width: 920px) {
   .sidebar { position: static; width: auto; margin: 14px 14px 0; flex-direction: row; align-items: center; padding: 10px 14px; border-radius: 20px; gap: 2px; overflow-x: auto; }
@@ -381,6 +437,10 @@ mark { background: #fde68a; border-radius: 4px; padding: 0 2px; }
         <button class="next-jump" id="next-jump">⚡ האירוע הבא</button>
       </div>
     </header>
+
+    <div id="next-up"></div>
+
+    <section id="calendar" class="calendar-wrap" aria-label="לוח חודשי של הקורסים"></section>
 
     <div class="courses-info" id="courses-info"></div>
 
@@ -1097,6 +1157,139 @@ function openModal(e) {
 }
 function closeModal() { document.getElementById("session-backdrop").classList.remove("show"); }
 
+// ===================== next-up banner =====================
+function renderNextUp() {
+  const root = document.getElementById("next-up");
+  root.innerHTML = "";
+  const pool = sorted.filter(e =>
+    (e.type === "session" || e.type === "exam") &&
+    e.date >= today &&
+    (state.course === "all" || String(e.course) === state.course));
+  if (!pool.length) return;
+
+  const first = pool[0];
+  const group = pool.filter(e => e.date === first.date && e.type === first.type && e.sessionNum === first.sessionNum);
+  const diff = Math.round((Date.parse(first.date) - Date.parse(today)) / 86400000);
+  const when = diff === 0 ? "היום!" : diff === 1 ? "מחר" : `בעוד ${diff} ימים`;
+
+  const banner = el("section", `next-banner ${paletteFor(first)}`);
+  const courseTags = group.filter(g => g.course !== 0)
+    .map(g => `<span class="nb-course" style="--c:${accentFor(g)}">קורס ${g.course}</span>`).join("");
+  const hoursTxt = group.length === 1 && first.course !== 0 && COURSES[first.course]
+    ? `<span>🕘 ${COURSES[first.course].hours}</span>` : "";
+
+  const hol = sorted.find(h => h.type === "holiday" && h.date >= today && h.date < first.date &&
+    (state.course === "all" || String(h.course) === state.course));
+
+  const chips = (first.topics || []).map(t => {
+    const prepUrl = prepFor(first, t);
+    const mats = materialsFor(first, t);
+    const d = detailsFor(first, t);
+    const time = d && d.time ? ` <small>⏱ ${d.time}׳</small>` : "";
+    if (prepUrl) return `<span class="nb-chip-group"><a class="material-link prep" href="${pptxViewerUrl(prepUrl)}" target="_blank" rel="noopener">🧑‍🏫 ${esc(t)}${time}</a><a class="material-link prep" href="${prepUrl}" target="_blank" rel="noopener" title="הורדת הקובץ">⬇️</a></span>`;
+    if (mats.length) return mats.map(m => `<a class="material-link" href="${m.url}" target="_blank" rel="noopener">📊 ${esc(m.label)}${time}</a>`).join("");
+    return `<span class="nb-plain">${esc(t)}${time}</span>`;
+  }).join("");
+
+  banner.innerHTML = `
+    <div class="nb-head">
+      <span class="nb-date">${fmtDom(first.date)}<span class="mon">${fmtMonShort(first.date)}</span></span>
+      <div class="nb-main">
+        <div class="nb-kicker">${first.type === "exam" ? "המבחן הקרוב" : "המפגש הקרוב"} · ${when}</div>
+        <h2>${esc(first.label)}</h2>
+        <div class="nb-meta"><span>יום ${first.weekday}</span>${courseTags}${hoursTxt}</div>
+      </div>
+      <button class="nb-more">כל הפרטים ←</button>
+    </div>
+    ${hol ? `<div class="nb-holiday">🌴 לפני כן — ${esc(hol.label)} (יום ${hol.weekday}, ${fmtDom(hol.date)} ב${monthLabel(hol.date)})</div>` : ""}
+    ${chips ? `<div class="nb-topics">${chips}</div>` : ""}
+  `;
+  banner.querySelector(".nb-more").addEventListener("click", () => openModal(first));
+  root.appendChild(banner);
+}
+
+// ===================== month calendar =====================
+const DOW_HEB = ["א׳", "ב׳", "ג׳", "ד׳", "ה׳", "ו׳", "ש׳"];
+
+function renderCalendar() {
+  const root = document.getElementById("calendar");
+  root.innerHTML = "";
+  const evs = filteredEvents({ ignoreQuery: true });
+  if (!evs.length) return;
+
+  const byDate = {};
+  evs.forEach(e => { (byDate[e.date] = byDate[e.date] || []).push(e); });
+  const months = [...new Set(evs.map(e => monthKey(e.date)))].sort();
+
+  months.forEach(mk => {
+    const [y, m] = mk.split("-").map(Number);
+    const firstDow = new Date(Date.UTC(y, m - 1, 1)).getUTCDay();
+    const dim = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    const monthCount = evs.filter(e => monthKey(e.date) === mk).length;
+
+    const box = el("div", "cal-month");
+    box.appendChild(el("div", "cal-title", `<span>${monthLabel(mk + "-01")}</span><span class="cal-count">${monthCount} אירועים</span>`));
+    const grid = el("div", "cal-grid");
+    DOW_HEB.forEach(d => grid.appendChild(el("div", "cal-dow", d)));
+    for (let i = 0; i < firstDow; i++) grid.appendChild(el("div", "cal-day empty"));
+    for (let d = 1; d <= dim; d++) {
+      const iso = mk + "-" + String(d).padStart(2, "0");
+      const dayEvents = byDate[iso] || [];
+      const cell = el("div", "cal-day");
+      if (iso === today) cell.classList.add("today");
+      else if (iso < today) cell.classList.add("past");
+      let dots = "";
+      if (dayEvents.length) {
+        cell.classList.add("has-events");
+        dots = `<div class="cal-dots">` + dayEvents.map(e => `<span class="cal-dot ${e.type}" style="background:${accentFor(e)}"></span>`).join("") + `</div>`;
+        cell.title = dayEvents.map(e => (e.course ? `קורס ${e.course}: ` : "") + e.label).join(" · ");
+        cell.addEventListener("click", () => openDayModal(iso, dayEvents));
+      }
+      cell.innerHTML = `<span class="cal-num">${d}</span>` + dots;
+      grid.appendChild(cell);
+    }
+    box.appendChild(grid);
+    root.appendChild(box);
+  });
+
+  const legend = el("div", "cal-legend");
+  legend.innerHTML = `
+    <span><span class="cal-dot" style="background:#3f7fe8"></span> קורס 1</span>
+    <span><span class="cal-dot" style="background:#14a06f"></span> קורס 2</span>
+    <span><span class="cal-dot" style="background:#d6437f"></span> קורס 3</span>
+    <span><span class="cal-dot exam" style="background:#ec8b33"></span> מבחן</span>
+    <span><span class="cal-dot" style="background:#8b87a0"></span> חופש</span>
+    <span><span class="cal-dot" style="background:#7c5cf0"></span> אבן דרך</span>`;
+  root.appendChild(legend);
+}
+
+function openDayModal(iso, events) {
+  if (events.length === 1) return openModal(events[0]);
+  const modal = document.getElementById("session-modal");
+  modal.className = "modal";
+  modal.innerHTML = "";
+  const head = el("div", "modal-head");
+  head.innerHTML = `
+    <span class="m-num">${fmtDom(iso)}<br><small style="font-size:0.55em;">${fmtMonShort(iso)}</small></span>
+    <div><h3>${events.length} אירועים ביום זה</h3><div class="m-meta">בחרו אירוע לצפייה בפרטים המלאים</div></div>
+    <button class="modal-close-x" data-close>✕</button>`;
+  modal.appendChild(head);
+  const list = el("div", "agenda");
+  events.forEach(e => {
+    const row = el("button", "day-pick");
+    const courseAccent = e.course && COURSES[e.course]
+      ? ({ "pal-blue": "#3f7fe8", "pal-green": "#14a06f", "pal-rose": "#d6437f" })[COURSES[e.course].palette] || accentFor(e)
+      : accentFor(e);
+    row.style.setProperty("--c", courseAccent);
+    row.innerHTML = `${e.course ? `<b>קורס ${e.course}</b>` : ""} ${esc(e.label)} <span class="arrow">←</span>`;
+    row.addEventListener("click", () => openModal(e));
+    list.appendChild(row);
+  });
+  modal.appendChild(list);
+  modal.querySelector(".modal-close-x").addEventListener("click", closeModal);
+  document.getElementById("session-backdrop").classList.add("show");
+}
+
 // ===================== interactions =====================
 function setupNav() {
   document.querySelectorAll(".track-toggle button").forEach(btn => {
@@ -1106,6 +1299,8 @@ function setupNav() {
       state.course = btn.dataset.course;
       renderCourseInfo();
       renderChrome();
+      renderNextUp();
+      renderCalendar();
       renderTimeline();
     });
   });
@@ -1115,6 +1310,7 @@ function setupNav() {
       document.querySelectorAll(".nav-btn[data-filter]").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       state.type = btn.dataset.filter;
+      renderCalendar();
       renderTimeline();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
@@ -1125,7 +1321,7 @@ function setupNav() {
     document.querySelectorAll(".track-toggle button").forEach(b => b.classList.toggle("active", b.dataset.course === "all"));
     document.querySelectorAll(".nav-btn[data-filter]").forEach(b => b.classList.toggle("active", b.dataset.filter === "all"));
     state.course = "all"; state.type = "all"; state.query = ""; document.getElementById("search").value = "";
-    renderCourseInfo(); renderChrome(); renderTimeline();
+    renderCourseInfo(); renderChrome(); renderNextUp(); renderCalendar(); renderTimeline();
     requestAnimationFrame(() => {
       const card = document.getElementById("card-" + nextEvent.course + "-" + nextEvent.type + "-" + nextEvent.date);
       if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1146,6 +1342,8 @@ function setupNav() {
 function init() {
   renderCourseInfo();
   renderChrome();
+  renderNextUp();
+  renderCalendar();
   renderTimeline();
   setupNav();
 }
