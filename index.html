@@ -158,6 +158,7 @@ body {
 .info-panel .notes div + div { margin-top: 4px; }
 .info-panel.pal-blue { --accent-c: #3f7fe8; }
 .info-panel.pal-green { --accent-c: #14a06f; }
+.info-panel.pal-rose { --accent-c: #d6437f; }
 
 .exam2-note {
   background: rgba(124,92,240,0.07); border: 1px dashed rgba(124,92,240,0.3); color: #5b21b6;
@@ -227,6 +228,7 @@ body {
 .pal-green  { --p1: #a9e8cd; --p2: #e0f7ec; --accent-c: #14a06f; }
 .pal-peach  { --p1: #f8c9a4; --p2: #fdeada; --accent-c: #ec8b33; }
 .pal-gray   { --p1: #d9d8e3; --p2: #f1f0f5; --accent-c: #8b87a0; }
+.pal-rose   { --p1: #f3b3d0; --p2: #fce8f2; --accent-c: #d6437f; }
 
 .empty-state { text-align: center; color: var(--muted); padding: 70px 0 30px; font-size: 0.95rem; }
 
@@ -350,18 +352,19 @@ mark { background: #fde68a; border-radius: 4px; padding: 0 2px; }
     </button>
 
     <div class="spacer"></div>
-    <div class="synced-note">הנתונים מתוך syllabus.rtf<br>עודכן 03/07/2026</div>
+    <div class="synced-note">הנתונים מתוך syllabus.rtf<br>עודכן 22/07/2026</div>
   </aside>
 
   <main class="content">
     <header class="welcome">
       <h1>שלום גבריאל 👋</h1>
-      <p class="sub">לוח מרכזי לשני הקורסים — לחצו על מפגש או מבחן כדי לראות את התוכן המלא</p>
+      <p class="sub">לוח מרכזי לכל הקורסים — לחצו על מפגש או מבחן כדי לראות את התוכן המלא</p>
 
       <div class="track-toggle" role="tablist" aria-label="בחירת קורס">
-        <button class="active" data-course="all" role="tab">שני הקורסים</button>
+        <button class="active" data-course="all" role="tab">כל הקורסים</button>
         <button data-course="1" role="tab">קורס 1</button>
         <button data-course="2" role="tab">קורס 2</button>
+        <button data-course="3" role="tab">קורס 3 (ערב)</button>
       </div>
 
       <div class="hero-tools">
@@ -382,7 +385,7 @@ mark { background: #fde68a; border-radius: 4px; padding: 0 2px; }
     <div class="courses-info" id="courses-info"></div>
 
     <div class="exam2-note">
-      💡 <strong>מבחן 2</strong> אינו מופיע בלוח השנה — הוא ניתן לתלמידים לפתרון עצמאי בבית, וההנחיות אליו ניתנות במפגש 7 (אסטרטגיה), בשני הקורסים.
+      💡 <strong>מבחן 2</strong> אינו מופיע בלוח השנה — הוא ניתן לתלמידים לפתרון עצמאי בבית, וההנחיות אליו ניתנות במפגש 7 (אסטרטגיה), בכל הקורסים.
     </div>
 
     <div id="timeline"></div>
@@ -438,6 +441,20 @@ const COURSES = {
       "גיבוי טכנולוגי: קיים ציוד בחדר, אך יש בקשה מפורשת מהנהלת בית הספר שהמדריך יגיע עם גיבוי משלו (לפטופ או חומרים על דיסק און קי)."
     ],
     palette: "pal-green"
+  },
+  3: {
+    id: 3, name: "קדם עתידים ויצ\"ו — קניון הנגב (ערב)", grades: "תיכונים ספטמבר",
+    type: "קדם עתידים ויצ\"ו (פרונטלי, ערב)", classCode: "PSTSFR0926BEEKAV1421",
+    location: "קניון הנגב, באר שבע — קומה 5",
+    days: "שני וחמישי", hours: "16:00–20:30",
+    period: "9 ביולי 2026 עד 27 באוגוסט 2026", students: null,
+    contacts: [
+      { role: "מדריך הקורס", name: "גבריאל ברמן", phone: "054-2347522" }
+    ],
+    notes: [
+      "כיתת ערב — סניף (אזור דרום רחוק)."
+    ],
+    palette: "pal-rose"
   }
 };
 
@@ -780,6 +797,29 @@ const SCHEDULE = [
   ev(2, "session", 13, "2026-08-27", "חמישי"),
   ev(2, "exam", 7, "2026-08-30", "ראשון", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
 
+  // קורס 3 (ערב, קניון הנגב) — אותם ימי לימוד (ב'+ה') ואותה תקופה (9/7–27/8) כמו קורס 2,
+  // לכן הלוז משוכפל ממנו. תאריכי המבחנים בהנחת זהות לקורס 2 — לאימות מול הסניף.
+  ev(3, "session", 1, "2026-07-09", "חמישי"),
+  ev(3, "session", 2, "2026-07-13", "שני"),
+  ev(3, "session", 3, "2026-07-16", "חמישי"),
+  ev(3, "session", 4, "2026-07-20", "שני"),
+  ev(3, "holiday", null, "2026-07-23", "חמישי", { label: "אין מפגש — חופש (ט' באב)" }),
+  ev(3, "session", 5, "2026-07-27", "שני"),
+  ev(3, "exam", 1, "2026-07-28", "שלישי"),
+  ev(3, "session", 6, "2026-07-30", "חמישי"),
+  ev(3, "session", 7, "2026-08-03", "שני"),
+  ev(3, "session", 8, "2026-08-06", "חמישי"),
+  ev(3, "exam", 3, "2026-08-07", "שישי", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+  ev(3, "session", 9, "2026-08-10", "שני"),
+  ev(3, "session", 10, "2026-08-13", "חמישי"),
+  ev(3, "exam", 4, "2026-08-14", "שישי", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+  ev(3, "session", 11, "2026-08-17", "שני"),
+  ev(3, "exam", 5, "2026-08-20", "חמישי", { note: "יום הבחינה במקום המפגש הרגיל" }),
+  ev(3, "session", 12, "2026-08-24", "שני"),
+  ev(3, "exam", 6, "2026-08-25", "שלישי"),
+  ev(3, "session", 13, "2026-08-27", "חמישי"),
+  ev(3, "exam", 7, "2026-08-30", "ראשון", { note: "החניכים נבחנים בנפרד מהבית — אין הוראה פרונטלית" }),
+
   ev(0, "milestone", null, "2026-09-02", "רביעי", {
     label: "המבחן הפסיכומטרי האמיתי (חלון אפשרי)",
     note: "התאריך המדויק (02/09 או 03/09) תלוי בהרשמה העצמאית של כל תלמיד מול המרכז הארצי להערכה ולבחינות."
@@ -819,7 +859,7 @@ function paletteFor(e) {
   return COURSES[e.course] ? COURSES[e.course].palette : "pal-purple";
 }
 function accentFor(e) {
-  const map = { "pal-blue": "#3f7fe8", "pal-green": "#14a06f", "pal-peach": "#ec8b33", "pal-gray": "#8b87a0", "pal-purple": "#7c5cf0" };
+  const map = { "pal-blue": "#3f7fe8", "pal-green": "#14a06f", "pal-rose": "#d6437f", "pal-peach": "#ec8b33", "pal-gray": "#8b87a0", "pal-purple": "#7c5cf0" };
   return map[paletteFor(e)];
 }
 
@@ -851,7 +891,7 @@ function filteredEvents(opts) {
 function renderCourseInfo() {
   const root = document.getElementById("courses-info");
   root.innerHTML = "";
-  const ids = state.course === "all" ? [1, 2] : [Number(state.course)];
+  const ids = state.course === "all" ? Object.keys(COURSES).map(Number) : [Number(state.course)];
   ids.forEach(id => {
     const c = COURSES[id];
     const card = el("div", `info-panel ${c.palette}`);
@@ -862,7 +902,7 @@ function renderCourseInfo() {
         <div class="row"><dt>מיקום</dt><dd>${c.location}</dd></div>
         <div class="row"><dt>ימי לימוד</dt><dd>${c.days}, ${c.hours}</dd></div>
         <div class="row"><dt>תקופה</dt><dd>${c.period}</dd></div>
-        <div class="row"><dt>נרשמים</dt><dd>${c.students} תלמידים</dd></div>
+        ${c.students ? `<div class="row"><dt>נרשמים</dt><dd>${c.students} תלמידים</dd></div>` : ""}
         <div class="row"><dt>מק"ט כיתה</dt><dd style="direction:ltr;unicode-bidi:isolate;text-align:left;">${c.classCode}</dd></div>
       </dl>
       <div class="contacts">${c.contacts.map(ct => `<div class="contact-line"><span>${ct.role}: ${ct.name}</span><a href="tel:${ct.phone.replace(/-/g,'')}">${ct.phone}</a></div>`).join("")}</div>
@@ -990,7 +1030,7 @@ function openModal(e) {
   modal.className = `modal ${paletteFor(e)}`;
   modal.innerHTML = "";
 
-  const courseName = e.course === 0 ? "שני הקורסים" : `קורס ${e.course} — ${COURSES[e.course].name}`;
+  const courseName = e.course === 0 ? "כל הקורסים" : `קורס ${e.course} — ${COURSES[e.course].name}`;
   const head = el("div", "modal-head");
   head.innerHTML = `
     <span class="m-num">${fmtDom(e.date)}<br><small style="font-size:0.55em;">${fmtMonShort(e.date)}</small></span>
